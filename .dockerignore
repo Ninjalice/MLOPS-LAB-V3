@@ -1,0 +1,63 @@
+# Git
+.git
+.gitignore
+.github
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv
+venv/
+ENV/
+env/
+
+# Testing
+.pytest_cache
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# Lab files
+Lab1.pdf
+create_test_image.py
+QUICKSTART.md
+
+# Tests (not needed in production)
+tests/
+
+# CLI (not needed for API deployment)
+cli/
+
+# HuggingFace Space files
+app.py
+requirements_hf.txt
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
