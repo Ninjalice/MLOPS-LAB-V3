@@ -2,11 +2,10 @@
 
 import gradio as gr
 import requests
-from PIL import Image
 import io
 
 # API URL - Replace with your Render deployment URL
-API_URL = "https://mlops-lab3-cv3j.onrender.com"  # Update this after deploying to Render
+API_URL = "https://mlops-lab2-fq77.onrender.com"  # Update this after deploying to Render
 
 
 def predict_image(image):
@@ -49,7 +48,7 @@ def predict_image(image):
 
 
 # Create Gradio interface
-with gr.Blocks(title="Image Classification - MLOps Lab 2", theme=gr.themes.Soft()) as demo:
+with gr.Blocks(title="Image Classification - MLOps Lab 2") as demo:
     gr.Markdown(
         """
         # 🖼️ Image Classification System
@@ -109,6 +108,5 @@ with gr.Blocks(title="Image Classification - MLOps Lab 2", theme=gr.themes.Soft(
         outputs=output_text
     )
 
-# Launch the app
-if __name__ == "__main__":
-    demo.launch()
+
+demo.launch()
