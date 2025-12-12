@@ -143,7 +143,8 @@ def test_class_labels_file_valid():
     labels_path = "class_labels.json"
     if os.path.exists(labels_path):
         import json
-        with open(labels_path, 'r', encoding='utf-8') as f:
+
+        with open(labels_path, "r", encoding="utf-8") as f:
             labels = json.load(f)
         assert isinstance(labels, list), "Class labels should be a list"
         assert len(labels) > 0, "Class labels should not be empty"
