@@ -30,6 +30,7 @@ COPY templates ./templates
 
 # Copy ONNX model and class labels (required for inference)
 COPY model.onnx ./
+COPY model.onnx.data ./
 COPY class_labels.json ./
 
 # Copy the .venv created by uv in the builder stage
