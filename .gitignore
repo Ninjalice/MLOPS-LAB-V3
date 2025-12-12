@@ -154,3 +154,16 @@ Thumbs.db
 !templates/*.png
 !templates/*.jpg
 
+train_data/
+
+# MLOps artifacts
+data/
+mlruns/
+plots/
+results/
+*.tar.gz
+
+
+*.db
+*.onnx
+*.onnx.data

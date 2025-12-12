@@ -28,6 +28,10 @@ COPY api ./api
 COPY logic ./logic
 COPY templates ./templates
 
+# Copy ONNX model and class labels (required for inference)
+COPY model.onnx ./
+COPY class_labels.json ./
+
 # Copy the .venv created by uv in the builder stage
 COPY --from=builder /app/.venv /app/.venv
 

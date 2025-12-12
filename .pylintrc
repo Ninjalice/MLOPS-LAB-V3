@@ -1,0 +1,25 @@
+[MASTER]
+extension-pkg-whitelist=torch
+
+[TYPECHECK]
+# List of members which are set dynamically and missed by Pylint inference
+# system, and so shouldn't trigger E1101 when accessed.
+generated-members=torch.*,numpy.*
+
+[MESSAGES CONTROL]
+# Optional: disable refactor (R) and conventions (C)
+disable=R,C
+
+[FORMAT]
+max-line-length=100
+
+[BASIC]
+# Good variable names which should always be accepted
+good-names=i,j,k,ex,Run,_,f,x,y,lr,id
+
+[DESIGN]
+# Maximum number of arguments for function / method
+max-args=10
+
+# Maximum number of attributes for a class
+max-attributes=15

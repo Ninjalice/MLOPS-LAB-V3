@@ -6,7 +6,7 @@ from PIL import Image
 import io
 
 # API URL - Replace with your Render deployment URL
-API_URL = "https://mlops-lab2-fq77.onrender.com"  # Update this after deploying to Render
+API_URL = "https://mlops-lab3-cv3j.onrender.com"  # Update this after deploying to Render
 
 
 def predict_image(image):

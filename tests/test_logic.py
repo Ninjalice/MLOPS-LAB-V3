@@ -1,5 +1,6 @@
 """Tests for the logic module."""
 
+import os
 import pytest
 from PIL import Image
 from logic.classifier import (
@@ -117,3 +118,33 @@ def test_class_names_not_empty():
 def test_class_names_are_strings():
     """Test that all class names are strings."""
     assert all(isinstance(name, str) for name in CLASS_NAMES)
+
+
+def test_onnx_model_file_exists():
+    """Test that the ONNX model file exists."""
+    model_path = "model.onnx"
+    assert os.path.exists(model_path), (
+        f"ONNX model file not found: {model_path}. "
+        "Please run serialize_model.py to create the model before containerization."
+    )
+
+
+def test_class_labels_file_exists():
+    """Test that the class labels JSON file exists."""
+    labels_path = "class_labels.json"
+    assert os.path.exists(labels_path), (
+        f"Class labels file not found: {labels_path}. "
+        "Please run serialize_model.py to create the labels file before containerization."
+    )
+
+
+def test_class_labels_file_valid():
+    """Test that the class labels file contains valid JSON."""
+    labels_path = "class_labels.json"
+    if os.path.exists(labels_path):
+        import json
+        with open(labels_path, 'r', encoding='utf-8') as f:
+            labels = json.load(f)
+        assert isinstance(labels, list), "Class labels should be a list"
+        assert len(labels) > 0, "Class labels should not be empty"
+        assert all(isinstance(label, str) for label in labels), "All labels should be strings"
