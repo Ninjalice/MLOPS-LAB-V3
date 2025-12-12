@@ -13,17 +13,17 @@ FROM base AS builder
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-COPY pyproject.toml uv.lock README.md ./
-COPY api ./api
-COPY logic ./logic
-COPY templates ./templates
+# Copy only the production requirements file
+COPY requirements-docker.txt .
 
-# Use uv to sync dependencies and install the project into a virtualenv
-RUN uv sync --frozen --no-dev
+# Install only runtime dependencies (no PyTorch, no training libs)
+RUN uv venv && \
+    uv pip install --no-cache -r requirements-docker.txt
 
 
 FROM base AS runtime
 
+# Copy application code
 COPY api ./api
 COPY logic ./logic
 COPY templates ./templates
