@@ -5,7 +5,7 @@ import requests
 import io
 
 # API URL - Replace with your Render deployment URL
-API_URL = "https://mlops-lab2-fq77.onrender.com"  # Update this after deploying to Render
+API_URL = "https://mlops-lab3-cv3j.onrender.comm"  # Update this after deploying to Render
 
 
 def predict_image(image):
@@ -48,11 +48,11 @@ def predict_image(image):
 
 
 # Create Gradio interface
-with gr.Blocks(title="Image Classification - MLOps Lab 2") as demo:
+with gr.Blocks(title="Image Classification - MLOps Lab 3") as demo:
     gr.Markdown(
         """
         # 🖼️ Image Classification System
-        ### MLOps Lab 2 - Continuous Delivery Pipeline
+        ### MLOps Lab 3 - Continuous Delivery Pipeline
         
         Upload an image to get a predicted class label using our deep learning model.
         """
