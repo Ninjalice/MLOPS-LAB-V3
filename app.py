@@ -55,8 +55,6 @@ with gr.Blocks(title="Image Classification - MLOps Lab 2") as demo:
         ### MLOps Lab 2 - Continuous Delivery Pipeline
         
         Upload an image to get a predicted class label using our deep learning model.
-        
-        **Supported Classes:** cat, dog, bird, fish, horse, deer, frog, car, airplane, ship
         """
     )
     
