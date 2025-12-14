@@ -57,7 +57,6 @@ with gr.Blocks(title="Image Classification - MLOps Lab 2", theme=gr.themes.Soft(
         
         Upload an image to get a predicted class label using our deep learning model.
         
-        **Supported Classes:** cat, dog, bird, fish, horse, deer, frog, car, airplane, ship
         """
     )
     

@@ -1,4 +1,4 @@
-.PHONY: install lint format test refactor all clean prepare-data train serialize mlflow-ui docker-build docker-push docker-deploy
+.PHONY: install lint format test refactor all clean train serialize mlflow-ui docker-build docker-push docker-deploy
 
 install:
 	@echo "Installing dependencies..."
@@ -16,13 +16,10 @@ test:
 	@echo "Running tests with pytest..."
 	uv run pytest tests/ -v --cov=logic --cov=cli --cov=api --cov-report=html --cov-report=term
 
-prepare-data:
-	@echo "Preparing annotations for training..."
-	uv run python prepare_annotations.py
-
 train:
-	@echo "Training model with MLflow tracking..."
-	uv run python train_model.py --epochs 3 --batch-size 32 --learning-rate 0.01
+	@echo "Training model on Oxford-IIIT Pet dataset with MLflow tracking..."
+	@echo "Dataset will be downloaded automatically on first run..."
+	uv run python train_model.py --epochs 3 --batch-size 64 --learning-rate 0.001 --data-dir ./data
 
 serialize:
 	@echo "Please provide RUN_ID as argument: make serialize RUN_ID=your_run_id"
@@ -61,6 +58,7 @@ all: install format lint test
 clean:
 	@echo "Cleaning up generated files..."
 	rm -rf __pycache__ .pytest_cache htmlcov .coverage
+	rm -rf data/oxford-iiit-pet
 	find . -type d -name "__pycache__" -exec rm -rf {} +
 	find . -type f -name "*.pyc" -delete
 	@echo "Cleanup complete!"

@@ -7,61 +7,13 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import DataLoader
 from torchvision import transforms, models
-from PIL import Image
+from torchvision.datasets import OxfordIIITPet
 import mlflow
 import mlflow.pytorch
 from tqdm import tqdm
 import matplotlib.pyplot as plt
-
-
-class CustomImageDataset(Dataset):
-    """Custom Dataset for loading images with annotations."""
-    
-    def __init__(self, annotations_file, img_dir, transform=None):
-        """
-        Args:
-            annotations_file: Path to annotations JSON file
-            img_dir: Directory with all the images
-            transform: Optional transform to be applied on a sample
-        """
-        with open(annotations_file, 'r', encoding='utf-8') as f:
-            self.annotations = json.load(f)
-        
-        self.img_dir = img_dir
-        self.transform = transform
-        
-        # Create mapping from class name to index
-        self.class_to_idx = {cls: idx for idx, cls in enumerate(self.get_classes())}
-        
-    def get_classes(self):
-        """Get unique class labels from annotations."""
-        classes = set()
-        for item in self.annotations:
-            classes.add(item['class'])
-        return sorted(list(classes))
-    
-    def __len__(self):
-        return len(self.annotations)
-    
-    def __getitem__(self, idx):
-        annotation = self.annotations[idx]
-        img_path = os.path.join(self.img_dir, annotation['filename'])
-        
-        try:
-            image = Image.open(img_path).convert('RGB')
-        except Exception as e:
-            print(f"Error loading image {img_path}: {e}")
-            # Return a blank image in case of error
-            image = Image.new('RGB', (224, 224), color='black')
-        
-        label = self.class_to_idx[annotation['class']]
-        
-        if self.transform:
-            image = self.transform(image)
-        
-        return image, label
 
 
 def create_data_transforms():
@@ -205,22 +157,26 @@ def main(args):
     # Create transforms
     train_transforms, val_transforms = create_data_transforms()
     
-    # Load datasets
-    print("Loading datasets...")
-    train_dataset = CustomImageDataset(
-        annotations_file=args.train_annotations,
-        img_dir=args.train_images,
-        transform=train_transforms
+    # Load Oxford-IIIT Pet dataset
+    print("Loading Oxford-IIIT Pet dataset...")
+    train_dataset = OxfordIIITPet(
+        root=args.data_dir,
+        split='trainval',
+        target_types='category',
+        transform=train_transforms,
+        download=False
     )
     
-    val_dataset = CustomImageDataset(
-        annotations_file=args.val_annotations,
-        img_dir=args.val_images,
-        transform=val_transforms
+    val_dataset = OxfordIIITPet(
+        root=args.data_dir,
+        split='test',
+        target_types='category',
+        transform=val_transforms,
+        download=False
     )
     
-    # Get class labels
-    class_labels = train_dataset.get_classes()
+    # Get class labels from the dataset
+    class_labels = [c.replace('_', ' ').title() for c in train_dataset.classes]
     num_classes = len(class_labels)
     print(f"Number of classes: {num_classes}")
     print(f"Classes: {class_labels}")
@@ -318,17 +274,11 @@ def main(args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Train image classification model")
+    parser = argparse.ArgumentParser(description="Train image classification model on Oxford-IIIT Pet dataset")
     
     # Data arguments
-    parser.add_argument("--train-annotations", type=str, default="train_data/annotations/train.json",
-                       help="Path to training annotations JSON")
-    parser.add_argument("--train-images", type=str, default="train_data/images",
-                       help="Path to training images directory")
-    parser.add_argument("--val-annotations", type=str, default="train_data/annotations/val.json",
-                       help="Path to validation annotations JSON")
-    parser.add_argument("--val-images", type=str, default="train_data/images",
-                       help="Path to validation images directory")
+    parser.add_argument("--data-dir", type=str, default="./data",
+                       help="Directory to download/store the Oxford-IIIT Pet dataset")
     
     # Training arguments
     parser.add_argument("--batch-size", type=int, default=32, help="Batch size")
@@ -339,7 +289,7 @@ if __name__ == "__main__":
                        help="Freeze feature extraction layers")
     
     # MLflow arguments
-    parser.add_argument("--experiment-name", type=str, default="image-classification",
+    parser.add_argument("--experiment-name", type=str, default="oxford-pet-classification",
                        help="MLflow experiment name")
     parser.add_argument("--run-name", type=str, default="resnet18-transfer-learning",
                        help="MLflow run name")
